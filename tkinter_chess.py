@@ -51,9 +51,10 @@ class Pawn(Piece):
         self.upgrade_to =0
     
     def upgrade_dialogue_box(self):
-        global tk
         def set_choice(num):
             self.upgrade_to = num
+            print(self.upgrade_to)
+            dialogue_window.quit()
             dialogue_window.destroy()
 
         num = 0
@@ -71,6 +72,7 @@ class Pawn(Piece):
     def upgrade(self):
         if (self.x == 7 and self.colour == 1) or (self.x == 0 and self.colour == -1):
             self.upgrade_dialogue_box()
+            print("teset", self.upgrade_to)
             if self.upgrade_to == 1:
                 Queen(colour=self.colour, x=self.x, y=self.y).update()
             elif self.upgrade_to == 2:
@@ -226,11 +228,11 @@ class King(Piece):
                 #print(type(board[y+additive][x+additive]).__name__)
                 if board[y+additive][x+additive] != " ":
                     found_piece = board[y+additive][x+additive]
-                    print(str(found_piece))
+                    #print(str(found_piece))
                     if found_piece.colour != self.colour:
                         if type(found_piece).__name__ == "Queen" or type(found_piece).__name__ == "Bishop":
                             check = True
-                            print("check")
+                            #print("check")
                             break
                         else:
                             break
@@ -344,7 +346,7 @@ class King(Piece):
                     check = True
         except:
             pass
-        print(board[6][3])
+        #print(board[6][3])
         return check
 
                 
@@ -597,25 +599,25 @@ def set_up_board():
     p2_king.update()
     for y in range(8):
         Pawn(colour=1, x=1, y=y).update()
-##    Queen(colour=1, x =0, y=4).update()
-##    Bishop(colour=1, x=0, y=2).update()
-##    Bishop(colour=1, x=0, y=5).update()
-##    Rook(colour=1, x=0, y=0).update()
-##    Rook(colour=1, x=0, y=7).update()
-##    Knight(colour=1, x=0, y=1).update()
-##    Knight(colour=1, x=0, y=6).update()
+    Queen(colour=1, x =0, y=4).update()
+    Bishop(colour=1, x=0, y=2).update()
+    Bishop(colour=1, x=0, y=5).update()
+    Rook(colour=1, x=0, y=0).update()
+    Rook(colour=1, x=0, y=7).update()
+    Knight(colour=1, x=0, y=1).update()
+    Knight(colour=1, x=0, y=6).update()
 
     p1_king = King(colour=-1, x=7, y=3)
     p1_king.update()
     for y in range(8):
         Pawn(colour=-1, x=6, y=y).update()
-##    Queen(colour=-1, x =7, y=4).update()
-##    Bishop(colour=-1, x=7, y=2).update()
-##    Bishop(colour=-1, x=7, y=5).update()
-##    Rook(colour=-1, x=7, y=0).update()
-##    Rook(colour=-1, x=7, y=7).update()
-##    Knight(colour=-1, x=7, y=1).update()
-##    Knight(colour=-1, x=7, y=6).update()
+    Queen(colour=-1, x =7, y=4).update()
+    Bishop(colour=-1, x=7, y=2).update()
+    Bishop(colour=-1, x=7, y=5).update()
+    Rook(colour=-1, x=7, y=0).update()
+    Rook(colour=-1, x=7, y=7).update()
+    Knight(colour=-1, x=7, y=1).update()
+    Knight(colour=-1, x=7, y=6).update()
 
 
 def update_tkinter_board():
@@ -628,6 +630,7 @@ def update_tkinter_board():
             to_x = row.index(p1_king)
             to_y = board.index(row)
             if p1_king.check_for_check():
+                print("P1 check")
                 if label_board[to_y][to_x].fg != "#00ff00":
                     label_board[to_y][to_x].config(fg="#ff0000")
                 print("p1 check")
@@ -643,6 +646,7 @@ def update_tkinter_board():
             to_x = row.index(p2_king)
             to_y = board.index(row)
             if p2_king.check_for_check():
+                print(label_board[to_y][to_x][""])
                 if label_board[to_y][to_x].fg != "#00ff00":
                     label_board[to_y][to_x].config(fg="#ff0000")
                 check_label.config(text="Black Check")
@@ -666,7 +670,7 @@ def move_piece(event):
                 break
             except:
                 continue
-        print(from_y, from_x)
+        #f(from_y, from_x)
         piece = board[from_y][from_x]
         if piece != " ":
             if piece.colour == player:
@@ -697,8 +701,8 @@ def move_piece(event):
                 instructions.config(text="White's Turn, Choose a Piece")
             else:
                 instructions.config(text="Black's Turn, Choose a Piece")
-    print("to:",to_y, to_x)
-    print(board[to_y][to_x])
+    #print("to:",to_y, to_x)
+    #print(board[to_y][to_x])
     #print(piece_selected, from_x, from_y)
     #print(space_selected)
 
