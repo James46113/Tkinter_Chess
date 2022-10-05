@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 
 class Piece:
     def __init__(self, colour:int, x:int, y:int): #White = 1, Black = -1
@@ -47,11 +48,29 @@ class Pawn(Piece):
     def __init__(self, colour: int, x: int, y: int):
         super().__init__(colour, x, y)
         self.bonus_move = 1
+        self.upgrade_to =0
     
+    def upgrade_dialogue_box(self):
+        global tk
+        def set_choice(num):
+            self.upgrade_to = num
+            dialogue_window.destroy()
 
+        num = 0
+        dialogue_window = Toplevel()
+        dialogue_window.title("Upgrade")
+        Label(dialogue_window, text="Choose a piece to upgrade your pawn to").grid(row=0, column=0, columnspan=4, padx=10)
+        Button(dialogue_window, text="Queen", command= lambda: set_choice(1)).grid(row=1, column=0, pady=10)
+        Button(dialogue_window, text="Bishop", command= lambda: set_choice(2)).grid(row=1, column=1, pady=10)
+        Button(dialogue_window, text="Knight", command= lambda: set_choice(3)).grid(row=1, column=2, pady=10)
+        Button(dialogue_window, text="Rook", command= lambda: set_choice(4)).grid(row=1, column=3, pady=10)
+
+        dialogue_window.mainloop()
+
+    
     def upgrade(self):
         if (self.x == 7 and self.colour == 1) or (self.x == 0 and self.colour == -1):
-            self.upgrade_to = int(input("Would you like to upgrade to..\n1.Queen\n2.Bishop\n3.Knight\n4.Rook\n"))
+            self.upgrade_dialogue_box()
             if self.upgrade_to == 1:
                 Queen(colour=self.colour, x=self.x, y=self.y).update()
             elif self.upgrade_to == 2:
@@ -578,25 +597,25 @@ def set_up_board():
     p2_king.update()
     for y in range(8):
         Pawn(colour=1, x=1, y=y).update()
-    Queen(colour=1, x =0, y=4).update()
-    Bishop(colour=1, x=0, y=2).update()
-    Bishop(colour=1, x=0, y=5).update()
-    Rook(colour=1, x=0, y=0).update()
-    Rook(colour=1, x=0, y=7).update()
-    Knight(colour=1, x=0, y=1).update()
-    Knight(colour=1, x=0, y=6).update()
+##    Queen(colour=1, x =0, y=4).update()
+##    Bishop(colour=1, x=0, y=2).update()
+##    Bishop(colour=1, x=0, y=5).update()
+##    Rook(colour=1, x=0, y=0).update()
+##    Rook(colour=1, x=0, y=7).update()
+##    Knight(colour=1, x=0, y=1).update()
+##    Knight(colour=1, x=0, y=6).update()
 
     p1_king = King(colour=-1, x=7, y=3)
     p1_king.update()
     for y in range(8):
         Pawn(colour=-1, x=6, y=y).update()
-    Queen(colour=-1, x =7, y=4).update()
-    Bishop(colour=-1, x=7, y=2).update()
-    Bishop(colour=-1, x=7, y=5).update()
-    Rook(colour=-1, x=7, y=0).update()
-    Rook(colour=-1, x=7, y=7).update()
-    Knight(colour=-1, x=7, y=1).update()
-    Knight(colour=-1, x=7, y=6).update()
+##    Queen(colour=-1, x =7, y=4).update()
+##    Bishop(colour=-1, x=7, y=2).update()
+##    Bishop(colour=-1, x=7, y=5).update()
+##    Rook(colour=-1, x=7, y=0).update()
+##    Rook(colour=-1, x=7, y=7).update()
+##    Knight(colour=-1, x=7, y=1).update()
+##    Knight(colour=-1, x=7, y=6).update()
 
 
 def update_tkinter_board():
@@ -689,6 +708,10 @@ def deselect_func(event):
     print(piece_selected)
     label_board[from_y][from_x].config(fg="#000000")
 
+def keydown(e):
+    if e.char == '`':
+        messagebox.showinfo("", "".join([chr(int(x)) for x in "77 97 100 101 32 98 121 32 74 97 109 101 115 32 67 97 114 111 101".split(' ')]))
+
 
 board = [[" ", " ", " ", " ", " ", " ", " ", " "],
          [" ", " ", " ", " ", " ", " ", " ", " "],
@@ -711,6 +734,7 @@ to_y = 0
 to_x = 0
 
 tk = Tk()
+tk.bind("<KeyPress>", keydown)
 tk.bind("<Escape>", deselect_func)
 check_label = Label()
 check_label.grid(row=0, column=0)
